@@ -1,18 +1,24 @@
+import {useStore as useStoreEffector} from 'effector-react';
 import React, {useCallback} from 'react';
 import {useSelector as useSelectorRedux, useStore as useStoreRedux} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import ArticleCard from '../../../components/article-card';
 import Spinner from '../../../components/spinner';
 import useInit from '../../../hooks/use-init';
+import useServices from '../../../hooks/use-services';
 import useStore from '../../../hooks/use-store';
 import useTranslate from '../../../hooks/use-translate';
-import actionsArticle from '../../../services/store-redux/article/actions';
+import {$data, fetchArticleFx} from '../../../services/effector/article';
 
 function ArticleDescription() {
   const storeRedux = useStoreRedux();
   const store = useStore();
   const params = useParams();
   const {t} = useTranslate();
+  const services = useServices();
+
+  const data = useStoreEffector($data);
+  const pending = useStoreEffector(fetchArticleFx.pending);
 
   const select = useSelectorRedux(state => ({
     data: state.article.data,
@@ -24,12 +30,15 @@ function ArticleDescription() {
   };
 
   useInit(async () => {
-    storeRedux.dispatch(actionsArticle.load(params.id));
+    // storeRedux.dispatch(actionsArticle.load(params.id));
+    fetchArticleFx({services, id: params.id});
+    // fetchEvent({action: articleRequest, id: params.id});
   }, [params.id]);
+  // console.log(articleData);
 
   return (
-    <Spinner active={select.waiting}>
-      <ArticleCard article={select.data} onAdd={callbacks.addToBasket} t={t} />
+    <Spinner active={pending}>
+      <ArticleCard article={data} onAdd={callbacks.addToBasket} t={t} />
     </Spinner>
   );
 }
