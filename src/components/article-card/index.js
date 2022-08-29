@@ -7,7 +7,6 @@ import './style.css';
 function ArticleCard({article, onAdd}) {
   // CSS классы по БЭМ
   const cn = bem('ArticleCard');
-  console.log(article);
   return (
     <div className={cn()}>
       <div className={cn('description')}>{article.description}</div>

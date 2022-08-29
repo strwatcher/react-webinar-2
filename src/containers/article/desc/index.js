@@ -32,9 +32,7 @@ function ArticleDescription() {
   useInit(async () => {
     // storeRedux.dispatch(actionsArticle.load(params.id));
     fetchArticleFx({services, id: params.id});
-    // fetchEvent({action: articleRequest, id: params.id});
   }, [params.id]);
-  // console.log(articleData);
 
   return (
     <Spinner active={pending}>
