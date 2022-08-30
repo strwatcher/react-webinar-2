@@ -1,5 +1,6 @@
 import APIService from './api';
 import {DateService} from './date';
+import {EffectorService} from './effector-service';
 import Store from './store';
 import createStoreRedux from './store-redux';
 import {translateService} from './translate';
@@ -39,6 +40,13 @@ class Services {
       this._storeRedux = createStoreRedux(this, this.config.storeRedux);
     }
     return this._storeRedux;
+  }
+
+  get effector() {
+    if (!this._effector) {
+      this._effector = new EffectorService(this, this.config.effector);
+    }
+    return this._effector;
   }
 
   get translate() {

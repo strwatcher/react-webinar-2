@@ -1,0 +1,1 @@
+export {articleModel} from './article';

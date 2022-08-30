@@ -1,21 +1,19 @@
 import {useStore as useStoreEffector} from 'effector-react';
-import React, {useCallback} from 'react';
+import React, {useCallback, useContext} from 'react';
 import {useSelector as useSelectorRedux, useStore as useStoreRedux} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import ArticleCard from '../../../components/article-card';
 import Spinner from '../../../components/spinner';
 import useInit from '../../../hooks/use-init';
-import useServices from '../../../hooks/use-services';
-import useStore from '../../../hooks/use-store';
 import useTranslate from '../../../hooks/use-translate';
-import {$data, fetchArticleFx} from '../../../services/effector/article';
+import {EffectorContext} from '../../../services/effector-service';
 
 function ArticleDescription() {
   const storeRedux = useStoreRedux();
-  const store = useStore();
+  // const store = useStore();
   const params = useParams();
   const {t} = useTranslate();
-  const services = useServices();
+  const {$data, fetchArticleFx} = useContext(EffectorContext).article;
 
   const data = useStoreEffector($data);
   const pending = useStoreEffector(fetchArticleFx.pending);
@@ -31,7 +29,7 @@ function ArticleDescription() {
 
   useInit(async () => {
     // storeRedux.dispatch(actionsArticle.load(params.id));
-    fetchArticleFx({services, id: params.id});
+    fetchArticleFx({id: params.id});
   }, [params.id]);
 
   return (
