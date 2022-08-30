@@ -1,11 +1,14 @@
 import {createContext} from 'react';
-import {articleModel} from './exports';
+import * as models from './exports';
 
 export class EffectorService {
   constructor(services, config = {}) {
     this.services = services;
     this.config = config;
-    this.article = articleModel(this.services);
+    this.models = {};
+    for (const name of Object.keys(models)) {
+      this.models[name] = models[name](services);
+    }
   }
 }
 

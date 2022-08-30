@@ -1,1 +1,1 @@
-export {articleModel} from './article';
+export {articleModel as article} from './article';
